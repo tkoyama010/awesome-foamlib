@@ -8,13 +8,13 @@ dependencies = []
 authors = [
     { name = "Tetsuo Koyama", email = "tkoyama010@gmail.com" }
 ]
-license = { text = "MIT" }
+license = "GPL-3.0-only"
 keywords = ["foamlib", "OpenFOAM", "CFD", "awesome-list"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering",
