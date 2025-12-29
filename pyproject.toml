@@ -31,7 +31,28 @@ build-backend = "hatchling.build"
 
 [tool.uv]
 dev-dependencies = [
+    "mypy>=1.19.1",
+    "pre-commit>=4.5.1",
     "pytest>=8.0.0",
+    "ruff>=0.14.10",
     "sphinx>=7.0.0",
     "sphinx-gallery>=0.15.0",
 ]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
