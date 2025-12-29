@@ -1,3 +1,7 @@
+<div align="center">
+<a href="https://github.com/gerlero/foamlib"><img src="https://github.com/gerlero/foamlib/raw/main/logo.png" height="65"></a>
+</div>
+
 # awesome-foamlib
 
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
