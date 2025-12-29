@@ -45,12 +45,12 @@ This project uses [uv](https://github.com/astral-sh/uv) for fast, modern Python 
 # Sync all dependencies including dev dependencies
 uv sync
 
-# Run tests
+# Run tests (after test files are created)
 uv run pytest
 
-# Build documentation
-cd docs
-uv run make html
+# Build documentation (after setting up docs/ directory with Sphinx configuration)
+# cd docs
+# uv run make html
 ```
 
 ## Project Structure
