@@ -1,10 +1,14 @@
 """Main entry point for awesome-foamlib package."""
 
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+logger = logging.getLogger(__name__)
+
 
 def main() -> None:
     """Print a greeting message from awesome-foamlib."""
-    msg = "Hello from awesome-foamlib!"
-    print(msg)  # noqa: T201
+    logger.info("Hello from awesome-foamlib!")
 
 
 if __name__ == "__main__":
