@@ -12,10 +12,6 @@
 
 An awesome list for [foamlib](https://github.com/exasim-project/foamlib) with OpenFOAM tutorials using sphinx-gallery.
 
-## Overview
-
-This repository serves as a curated collection of resources, tools, and tutorials for working with foamlib - a Python library for interacting with OpenFOAM.
-
 ## Features
 
 - 📚 Curated list of foamlib resources
