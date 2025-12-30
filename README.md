@@ -1,4 +1,4 @@
-# awesome-foamlib
+# awesome-foamlib  [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
@@ -8,11 +8,9 @@
 <a href="https://github.com/gerlero/foamlib"><img src="https://github.com/gerlero/foamlib/raw/main/logo.png" height="65"></a>
 </div>
 
+> **foamlib** is a modern Python package that provides an elegant, streamlined interface for interacting with OpenFOAM. It's designed to make OpenFOAM-based workflows more accessible, reproducible, and precise for researchers and engineers.
+
 An awesome list for [foamlib](https://github.com/exasim-project/foamlib) with OpenFOAM tutorials using sphinx-gallery.
-
-## Overview
-
-This repository serves as a curated collection of resources, tools, and tutorials for working with foamlib - a Python library for interacting with OpenFOAM.
 
 ## Features
 
