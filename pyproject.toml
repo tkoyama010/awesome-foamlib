@@ -24,6 +24,16 @@ classifiers = [
 Homepage = "https://github.com/tkoyama010/awesome-foamlib"
 Repository = "https://github.com/tkoyama010/awesome-foamlib"
 Issues = "https://github.com/tkoyama010/awesome-foamlib/issues"
+Documentation = "https://awesome-foamlib.readthedocs.io"
+
+[project.optional-dependencies]
+docs = [
+    "sphinx>=7.0.0",
+    "sphinx-gallery>=0.15.0",
+    "sphinx-rtd-theme>=2.0.0",
+    "matplotlib>=3.8.0",
+    "numpy>=1.26.0",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -35,8 +45,6 @@ dev-dependencies = [
     "pre-commit>=4.5.1",
     "pytest>=8.0.0",
     "ruff>=0.14.10",
-    "sphinx>=7.0.0",
-    "sphinx-gallery>=0.15.0",
 ]
 
 [tool.ruff]
