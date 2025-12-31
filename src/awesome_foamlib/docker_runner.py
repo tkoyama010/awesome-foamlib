@@ -69,7 +69,11 @@ class DockerFoamRunner:
             user = f"{uid}:{gid}"
 
         # Construct command with OpenFOAM environment sourcing
-        full_command = f"/bin/bash -c 'source /usr/lib/openfoam/openfoam*/etc/bashrc && {command}'"
+        # Explicitly cd to working directory to ensure we're in the mounted volume
+        full_command = (
+            f"/bin/bash -c 'cd {container_workdir} && "
+            f"source /usr/lib/openfoam/openfoam*/etc/bashrc && {command}'"
+        )
 
         logger.info("Starting command: %s", command)
 
@@ -86,7 +90,8 @@ class DockerFoamRunner:
 
             # Stream logs in real-time
             for line in container.logs(stream=True):
-                logger.info(line.decode("utf-8").rstrip())
+                decoded_line = line.decode("utf-8").rstrip()
+                logger.info(decoded_line)
 
             # Wait for container to finish
             result = container.wait()
