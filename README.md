@@ -60,8 +60,6 @@ runner.run(Path("./cavity"), "blockMesh")
 runner.run(Path("./cavity"), "icoFoam")
 ```
 
-See [Docker Runner Documentation](docs/docker_runner.md) for more details.
-
 ## Development
 
 This project uses [uv](https://github.com/astral-sh/uv) for fast, modern Python package management.
