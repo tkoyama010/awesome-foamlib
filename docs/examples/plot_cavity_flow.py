@@ -29,6 +29,7 @@ the simulation.
 import logging
 import os
 import shutil
+import sys
 import tempfile
 from pathlib import Path
 
@@ -47,6 +48,21 @@ logger = logging.getLogger(__name__)
 tutorial_path = Path(
     "/usr/share/doc/openfoam-examples/examples/incompressible/icoFoam/cavity/cavity",
 )
+
+# Check if tutorial exists
+if not tutorial_path.exists():
+    logger.warning("OpenFOAM tutorial not found at %s", tutorial_path)
+    logger.info("This example requires OpenFOAM and openfoam-examples to be installed")
+    logger.info("Install with: sudo apt install openfoam openfoam-examples")
+    logger.info("Or use openfoam-app: https://github.com/gerlero/openfoam-app")
+
+    # Exit gracefully for documentation builds
+    if os.environ.get("READTHEDOCS") == "True":
+        logger.info("Skipping example on ReadTheDocs (tutorial not available)")
+        sys.exit(0)
+    else:
+        msg = f"OpenFOAM tutorial not found at {tutorial_path}"
+        raise FileNotFoundError(msg)
 
 # Create a temporary working directory
 work_dir = Path(tempfile.mkdtemp(prefix="cavity_"))
