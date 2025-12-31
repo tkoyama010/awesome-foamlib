@@ -45,8 +45,11 @@ logger = logging.getLogger(__name__)
 
 if shutil.which("blockMesh") is None:
     msg = (
-        "OpenFOAM not found. This example requires OpenFOAM to be installed. "
-        "Install with: sudo apt install openfoam openfoam-examples"
+        "OpenFOAM not found. This example requires OpenFOAM to be installed.\n"
+        "Installation options:\n"
+        "  - Ubuntu/Debian: sudo apt install openfoam openfoam-examples\n"
+        "  - macOS: Use openfoam-app from https://github.com/gerlero/openfoam-app\n"
+        "  - Other: See https://www.openfoam.com/download"
     )
     raise RuntimeError(msg)
 
