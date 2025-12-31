@@ -86,21 +86,6 @@ uv run ruff check src/
 # uv run make html
 ```
 
-## Project Structure
-
-```
-awesome-foamlib/
-├── src/
-│   └── awesome_foamlib/
-│       ├── __init__.py
-│       └── docker_runner.py    # Docker SDK-based OpenFOAM runner
-├── docs/
-│   └── docker_runner.md        # Docker runner documentation
-├── examples/                    # Tutorial examples (future)
-├── pyproject.toml              # Project configuration
-└── README.md
-```
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
