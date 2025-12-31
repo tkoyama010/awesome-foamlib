@@ -1,5 +1,15 @@
 """Configuration file for the Sphinx documentation builder."""
 
+import os
+from pathlib import Path
+
+# Setup OpenFOAM environment if available
+if Path("/usr/share/openfoam/etc/bashrc").exists():
+    # Set required OpenFOAM environment variables for subprocess calls
+    os.environ["WM_PROJECT_DIR"] = "/usr/share/openfoam"
+    os.environ["WM_PROJECT"] = "OpenFOAM"
+    os.environ["WM_PROJECT_VERSION"] = "v1912"
+
 # -- Project information -----------------------------------------------------
 project = "awesome-foamlib"
 copyright_text = "2025, Tetsuo Koyama"
@@ -30,7 +40,23 @@ sphinx_gallery_conf = {
     "ignore_pattern": r"(__init__|conf)\.py",
     "download_all_examples": False,
     "plot_gallery": True,
+    "abort_on_example_error": False,  # Don't fail build on example errors
+    "matplotlib_animations": False,
+    "image_scrapers": ("matplotlib", "pyvista"),  # Scrape matplotlib and pyvista figures
+    "reset_modules": ("matplotlib", "seaborn"),
 }
+
+# Configure PyVista for headless rendering on ReadTheDocs
+if os.environ.get("READTHEDOCS") == "True":
+    # Set PyVista to off-screen rendering for headless environment
+    try:
+        import pyvista as pv
+
+        pv.OFF_SCREEN = True
+        pv.BUILDING_GALLERY = True
+        pv.start_xvfb()
+    except (ImportError, OSError):
+        pass  # PyVista not available or xvfb not available
 
 # -- Intersphinx configuration -----------------------------------------------
 intersphinx_mapping = {
