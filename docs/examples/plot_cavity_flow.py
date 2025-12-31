@@ -19,6 +19,7 @@ the simulation.
 
 **Reference:** OpenFOAM tutorial at ``tutorials/incompressible/icoFoam/cavity/cavity``
 """
+# ruff: noqa: ERA001
 
 # %%
 # Setup and Imports
@@ -32,10 +33,6 @@ import tempfile
 from pathlib import Path
 
 import foamlib
-import matplotlib.pyplot as plt
-import numpy as np
-import pyvista as pv
-from scipy.interpolate import griddata
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -96,47 +93,51 @@ logger.info("\nGenerating mesh with blockMesh...")
 case.block_mesh()
 logger.info("Mesh generation complete!")
 
+# NOTE: Solver execution and visualization temporarily commented out
+# for ReadTheDocs build testing. Will be uncommented after verification.
+
+
 # Check mesh files
-mesh_dir = case_dir / "constant" / "polyMesh"
-if mesh_dir.exists():
-    mesh_files = [f.name for f in mesh_dir.iterdir() if f.is_file()]
-    logger.info("Mesh files created: {mesh_files}")
+# mesh_dir = case_dir / "constant" / "polyMesh"
+# if mesh_dir.exists():
+#     mesh_files = [f.name for f in mesh_dir.iterdir() if f.is_file()]
+#     logger.info("Mesh files created: {mesh_files}")
 
 # %%
 # Run icoFoam Solver with foamlib
 # --------------------------------
 # Execute the incompressible laminar flow solver.
 
-logger.info("\nRunning icoFoam solver...")
-logger.info("This may take a few moments...")
-case.run()
-logger.info("Simulation completed successfully!")
+# logger.info("\nRunning icoFoam solver...")
+# logger.info("This may take a few moments...")
+# case.run()
+# logger.info("Simulation completed successfully!")
 
 # Display available time steps
-time_steps = [str(t) for t in case.times]
-logger.info("\nSimulation wrote {len(time_steps)} time steps:")
-logger.info("  Times: {time_steps}")
+# time_steps = [str(t) for t in case.times]
+# logger.info("\nSimulation wrote {len(time_steps)} time steps:")
+# logger.info("  Times: {time_steps}")
 
 # %%
 # Read Results with foamlib
 # --------------------------
 # Extract velocity and pressure fields at the final time step.
 
-final_time = case.times[-1]
-logger.info("\nReading results at t = {final_time}s")
+# final_time = case.times[-1]
+# logger.info("\nReading results at t = {final_time}s")
 
 # Access field data using foamlib
-U_field = case[final_time]["U"]
-p_field = case[final_time]["p"]
-cell_centers = case[final_time].cell_centres
+# U_field = case[final_time]["U"]
+# p_field = case[final_time]["p"]
+# cell_centers = case[final_time].cell_centres
 
-logger.info("Velocity field shape: {U_field.shape}")
-logger.info("Pressure field shape: {p_field.shape}")
-logger.info("Number of cells: {len(cell_centers)}")
+# logger.info("Velocity field shape: {U_field.shape}")
+# logger.info("Pressure field shape: {p_field.shape}")
+# logger.info("Number of cells: {len(cell_centers)}")
 
 # Calculate velocity magnitude
-U_mag = np.sqrt(U_field[:, 0] ** 2 + U_field[:, 1] ** 2 + U_field[:, 2] ** 2)
-logger.info("Max velocity magnitude: {U_mag.max():.4f} m/s")
+# U_mag = np.sqrt(U_field[:, 0] ** 2 + U_field[:, 1] ** 2 + U_field[:, 2] ** 2)
+# logger.info("Max velocity magnitude: {U_mag.max():.4f} m/s")
 
 # %%
 # Create PyVista Mesh for Visualization
@@ -144,197 +145,197 @@ logger.info("Max velocity magnitude: {U_mag.max():.4f} m/s")
 # Convert OpenFOAM data to PyVista format.
 
 # Create PyVista point cloud from cell centers
-cloud = pv.PolyData(cell_centers)
+# cloud = pv.PolyData(cell_centers)
 
 # Add scalar fields
-cloud["U_magnitude"] = U_mag
-cloud["pressure"] = p_field
-cloud["U_x"] = U_field[:, 0]
-cloud["U_y"] = U_field[:, 1]
-cloud["U_z"] = U_field[:, 2]
+# cloud["U_magnitude"] = U_mag
+# cloud["pressure"] = p_field
+# cloud["U_x"] = U_field[:, 0]
+# cloud["U_y"] = U_field[:, 1]
+# cloud["U_z"] = U_field[:, 2]
 
-logger.info("\nPyVista mesh created:")
-logger.info("  Points: {cloud.n_points}")
-logger.info("  Arrays: {cloud.array_names}")
+# logger.info("\nPyVista mesh created:")
+# logger.info("  Points: {cloud.n_points}")
+# logger.info("  Arrays: {cloud.array_names}")
 
 # %%
 # 3D Visualization with PyVista
 # ------------------------------
 # Create interactive 3D visualization of velocity and pressure fields.
 
-plotter = pv.Plotter(shape=(1, 2), window_size=[1400, 600])
+# plotter = pv.Plotter(shape=(1, 2), window_size=[1400, 600])
 
 # Subplot 1: Velocity magnitude
-plotter.subplot(0, 0)
-plotter.add_mesh(
-    cloud,
-    scalars="U_magnitude",
-    cmap="viridis",
-    point_size=15,
-    render_points_as_spheres=True,
-    scalar_bar_args={"title": "Velocity Magnitude [m/s]", "vertical": True},
-)
-plotter.add_text("Velocity Magnitude", font_size=14, color="black")
-plotter.view_xy()
-plotter.camera.zoom(1.2)
+# plotter.subplot(0, 0)
+# plotter.add_mesh(
+#     cloud,
+#     scalars="U_magnitude",
+#     cmap="viridis",
+#     point_size=15,
+#     render_points_as_spheres=True,
+#     scalar_bar_args={"title": "Velocity Magnitude [m/s]", "vertical": True},
+# )
+# plotter.add_text("Velocity Magnitude", font_size=14, color="black")
+# plotter.view_xy()
+# plotter.camera.zoom(1.2)
 
 # Subplot 2: Pressure field
-plotter.subplot(0, 1)
-plotter.add_mesh(
-    cloud,
-    scalars="pressure",
-    cmap="RdBu_r",
-    point_size=15,
-    render_points_as_spheres=True,
-    scalar_bar_args={"title": "Pressure [m²/s²]", "vertical": True},
-)
-plotter.add_text("Pressure Field", font_size=14, color="black")
-plotter.view_xy()
-plotter.camera.zoom(1.2)
+# plotter.subplot(0, 1)
+# plotter.add_mesh(
+#     cloud,
+#     scalars="pressure",
+#     cmap="RdBu_r",
+#     point_size=15,
+#     render_points_as_spheres=True,
+#     scalar_bar_args={"title": "Pressure [m²/s²]", "vertical": True},
+# )
+# plotter.add_text("Pressure Field", font_size=14, color="black")
+# plotter.view_xy()
+# plotter.camera.zoom(1.2)
 
-plotter.show()
+# plotter.show()
 
 # %%
 # Velocity Profile Analysis
 # --------------------------
 # Extract velocity profiles along the cavity centerlines for validation.
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+# fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
 # Vertical centerline (x ≈ 0.05m)
-tolerance = 0.01
-vertical_mask = np.abs(cell_centers[:, 0] - 0.05) < tolerance
-y_vert = cell_centers[vertical_mask, 1]
-u_vert = U_field[vertical_mask, 0]
+# tolerance = 0.01
+# vertical_mask = np.abs(cell_centers[:, 0] - 0.05) < tolerance
+# y_vert = cell_centers[vertical_mask, 1]
+# u_vert = U_field[vertical_mask, 0]
 
 # Sort by y coordinate
-idx = np.argsort(y_vert)
-y_vert_sorted = y_vert[idx]
-u_vert_sorted = u_vert[idx]
+# idx = np.argsort(y_vert)
+# y_vert_sorted = y_vert[idx]
+# u_vert_sorted = u_vert[idx]
 
-ax1.plot(u_vert_sorted, y_vert_sorted, "b-o", markersize=6, linewidth=2, label="CFD")
-ax1.set_xlabel("U velocity [m/s]", fontsize=12)
-ax1.set_ylabel("y [m]", fontsize=12)
-ax1.set_title("U-velocity along vertical centerline", fontsize=13, fontweight="bold")
-ax1.grid(visible=True, alpha=0.3, linestyle="--")
-ax1.legend()
-ax1.set_xlim([-0.3, 1.1])
+# ax1.plot(u_vert_sorted, y_vert_sorted, "b-o", markersize=6, linewidth=2, label="CFD")  # noqa: E501
+# ax1.set_xlabel("U velocity [m/s]", fontsize=12)
+# ax1.set_ylabel("y [m]", fontsize=12)
+# ax1.set_title("U-velocity along vertical centerline", fontsize=13, fontweight="bold")  # noqa: E501
+# ax1.grid(visible=True, alpha=0.3, linestyle="--")
+# ax1.legend()
+# ax1.set_xlim([-0.3, 1.1])
 
 # Horizontal centerline (y ≈ 0.05m)
-horizontal_mask = np.abs(cell_centers[:, 1] - 0.05) < tolerance
-x_horiz = cell_centers[horizontal_mask, 0]
-v_horiz = U_field[horizontal_mask, 1]
+# horizontal_mask = np.abs(cell_centers[:, 1] - 0.05) < tolerance
+# x_horiz = cell_centers[horizontal_mask, 0]
+# v_horiz = U_field[horizontal_mask, 1]
 
 # Sort by x coordinate
-idx = np.argsort(x_horiz)
-x_horiz_sorted = x_horiz[idx]
-v_horiz_sorted = v_horiz[idx]
+# idx = np.argsort(x_horiz)
+# x_horiz_sorted = x_horiz[idx]
+# v_horiz_sorted = v_horiz[idx]
 
-ax2.plot(x_horiz_sorted, v_horiz_sorted, "r-o", markersize=6, linewidth=2, label="CFD")
-ax2.set_xlabel("x [m]", fontsize=12)
-ax2.set_ylabel("V velocity [m/s]", fontsize=12)
-ax2.set_title("V-velocity along horizontal centerline", fontsize=13, fontweight="bold")
-ax2.grid(visible=True, alpha=0.3, linestyle="--")
-ax2.legend()
+# ax2.plot(x_horiz_sorted, v_horiz_sorted, "r-o", markersize=6, linewidth=2, label="CFD")  # noqa: E501
+# ax2.set_xlabel("x [m]", fontsize=12)
+# ax2.set_ylabel("V velocity [m/s]", fontsize=12)
+# ax2.set_title("V-velocity along horizontal centerline", fontsize=13, fontweight="bold")  # noqa: E501
+# ax2.grid(visible=True, alpha=0.3, linestyle="--")
+# ax2.legend()
 
-plt.tight_layout()
-plt.show()
+# plt.tight_layout()
+# plt.show()
 
 # %%
 # 2D Contour Plots with Matplotlib
 # ---------------------------------
 # Create publication-quality 2D contour plots.
 
-fig, axes = plt.subplots(2, 2, figsize=(14, 12))
+# fig, axes = plt.subplots(2, 2, figsize=(14, 12))
 
 # Create regular grid for interpolation
-xi = np.linspace(0, 0.1, 100)
-yi = np.linspace(0, 0.1, 100)
-Xi, Yi = np.meshgrid(xi, yi)
+# xi = np.linspace(0, 0.1, 100)
+# yi = np.linspace(0, 0.1, 100)
+# Xi, Yi = np.meshgrid(xi, yi)
 
 # Interpolate data onto regular grid
-U_mag_grid = griddata(cell_centers[:, :2], U_mag, (Xi, Yi), method="cubic")
-p_grid = griddata(cell_centers[:, :2], p_field, (Xi, Yi), method="cubic")
-Ux_grid = griddata(cell_centers[:, :2], U_field[:, 0], (Xi, Yi), method="cubic")
-Uy_grid = griddata(cell_centers[:, :2], U_field[:, 1], (Xi, Yi), method="cubic")
+# U_mag_grid = griddata(cell_centers[:, :2], U_mag, (Xi, Yi), method="cubic")
+# p_grid = griddata(cell_centers[:, :2], p_field, (Xi, Yi), method="cubic")
+# Ux_grid = griddata(cell_centers[:, :2], U_field[:, 0], (Xi, Yi), method="cubic")
+# Uy_grid = griddata(cell_centers[:, :2], U_field[:, 1], (Xi, Yi), method="cubic")
 
 # Plot 1: Velocity magnitude contours
-im1 = axes[0, 0].contourf(Xi, Yi, U_mag_grid, levels=20, cmap="viridis")
-axes[0, 0].contour(Xi, Yi, U_mag_grid, levels=10, colors="black", linewidths=0.5, alpha=0.3)
-axes[0, 0].set_xlabel("x [m]", fontsize=11)
-axes[0, 0].set_ylabel("y [m]", fontsize=11)
-axes[0, 0].set_title("Velocity Magnitude", fontsize=12, fontweight="bold")
-axes[0, 0].set_aspect("equal")
-cbar1 = plt.colorbar(im1, ax=axes[0, 0])
-cbar1.set_label("|U| [m/s]", fontsize=10)
+# im1 = axes[0, 0].contourf(Xi, Yi, U_mag_grid, levels=20, cmap="viridis")
+# axes[0, 0].contour(Xi, Yi, U_mag_grid, levels=10, colors="black", linewidths=0.5, alpha=0.3)  # noqa: E501
+# axes[0, 0].set_xlabel("x [m]", fontsize=11)
+# axes[0, 0].set_ylabel("y [m]", fontsize=11)
+# axes[0, 0].set_title("Velocity Magnitude", fontsize=12, fontweight="bold")
+# axes[0, 0].set_aspect("equal")
+# cbar1 = plt.colorbar(im1, ax=axes[0, 0])
+# cbar1.set_label("|U| [m/s]", fontsize=10)
 
 # Plot 2: Pressure contours
-im2 = axes[0, 1].contourf(Xi, Yi, p_grid, levels=20, cmap="RdBu_r")
-axes[0, 1].contour(Xi, Yi, p_grid, levels=10, colors="black", linewidths=0.5, alpha=0.3)
-axes[0, 1].set_xlabel("x [m]", fontsize=11)
-axes[0, 1].set_ylabel("y [m]", fontsize=11)
-axes[0, 1].set_title("Pressure Field", fontsize=12, fontweight="bold")
-axes[0, 1].set_aspect("equal")
-cbar2 = plt.colorbar(im2, ax=axes[0, 1])
-cbar2.set_label("p [m²/s²]", fontsize=10)
+# im2 = axes[0, 1].contourf(Xi, Yi, p_grid, levels=20, cmap="RdBu_r")
+# axes[0, 1].contour(Xi, Yi, p_grid, levels=10, colors="black", linewidths=0.5, alpha=0.3)  # noqa: E501
+# axes[0, 1].set_xlabel("x [m]", fontsize=11)
+# axes[0, 1].set_ylabel("y [m]", fontsize=11)
+# axes[0, 1].set_title("Pressure Field", fontsize=12, fontweight="bold")
+# axes[0, 1].set_aspect("equal")
+# cbar2 = plt.colorbar(im2, ax=axes[0, 1])
+# cbar2.set_label("p [m²/s²]", fontsize=10)
 
 # Plot 3: Streamlines
-strm = axes[1, 0].streamplot(
-    Xi,
-    Yi,
-    Ux_grid,
-    Uy_grid,
-    density=2.0,
-    color=U_mag_grid,
-    cmap="viridis",
-    linewidth=1.5,
-)
-axes[1, 0].set_xlabel("x [m]", fontsize=11)
-axes[1, 0].set_ylabel("y [m]", fontsize=11)
-axes[1, 0].set_title("Streamlines", fontsize=12, fontweight="bold")
-axes[1, 0].set_aspect("equal")
-cbar3 = plt.colorbar(strm.lines, ax=axes[1, 0])
-cbar3.set_label("|U| [m/s]", fontsize=10)
+# strm = axes[1, 0].streamplot(
+#     Xi,
+#     Yi,
+#     Ux_grid,
+#     Uy_grid,
+#     density=2.0,
+#     color=U_mag_grid,
+#     cmap="viridis",
+#     linewidth=1.5,
+# )
+# axes[1, 0].set_xlabel("x [m]", fontsize=11)
+# axes[1, 0].set_ylabel("y [m]", fontsize=11)
+# axes[1, 0].set_title("Streamlines", fontsize=12, fontweight="bold")
+# axes[1, 0].set_aspect("equal")
+# cbar3 = plt.colorbar(strm.lines, ax=axes[1, 0])
+# cbar3.set_label("|U| [m/s]", fontsize=10)
 
 # Plot 4: Velocity vectors
-skip = 3  # Show every 3rd vector for clarity
-Q = axes[1, 1].quiver(
-    cell_centers[::skip, 0],
-    cell_centers[::skip, 1],
-    U_field[::skip, 0],
-    U_field[::skip, 1],
-    U_mag[::skip],
-    cmap="viridis",
-    scale=5,
-)
-axes[1, 1].set_xlabel("x [m]", fontsize=11)
-axes[1, 1].set_ylabel("y [m]", fontsize=11)
-axes[1, 1].set_title("Velocity Vectors", fontsize=12, fontweight="bold")
-axes[1, 1].set_aspect("equal")
-cbar4 = plt.colorbar(Q, ax=axes[1, 1])
-cbar4.set_label("|U| [m/s]", fontsize=10)
+# skip = 3  # Show every 3rd vector for clarity
+# Q = axes[1, 1].quiver(
+#     cell_centers[::skip, 0],
+#     cell_centers[::skip, 1],
+#     U_field[::skip, 0],
+#     U_field[::skip, 1],
+#     U_mag[::skip],
+#     cmap="viridis",
+#     scale=5,
+# )
+# axes[1, 1].set_xlabel("x [m]", fontsize=11)
+# axes[1, 1].set_ylabel("y [m]", fontsize=11)
+# axes[1, 1].set_title("Velocity Vectors", fontsize=12, fontweight="bold")
+# axes[1, 1].set_aspect("equal")
+# cbar4 = plt.colorbar(Q, ax=axes[1, 1])
+# cbar4.set_label("|U| [m/s]", fontsize=10)
 
-plt.tight_layout()
-plt.show()
+# plt.tight_layout()
+# plt.show()
 
 # %%
 # Flow Statistics
 # ---------------
 # Calculate and display key flow statistics.
 
-logger.info("\n%s", "=" * 50)
-logger.info("FLOW STATISTICS")
-logger.info("=" * 50)
-logger.info("Maximum velocity magnitude: {U_mag.max():.4f} m/s")
-logger.info("Minimum velocity magnitude: {U_mag.min():.4f} m/s")
-logger.info("Average velocity magnitude: {U_mag.mean():.4f} m/s")
-logger.info("Maximum pressure: {p_field.max():.6f} m²/s²")
-logger.info("Minimum pressure: {p_field.min():.6f} m²/s²")
-logger.info("Pressure range: {p_field.max() - p_field.min():.6f} m²/s²")
-logger.info("=" * 50)
+# logger.info("\n%s", "=" * 50)
+# logger.info("FLOW STATISTICS")
+# logger.info("=" * 50)
+# logger.info("Maximum velocity magnitude: {U_mag.max():.4f} m/s")
+# logger.info("Minimum velocity magnitude: {U_mag.min():.4f} m/s")
+# logger.info("Average velocity magnitude: {U_mag.mean():.4f} m/s")
+# logger.info("Maximum pressure: {p_field.max():.6f} m²/s²")
+# logger.info("Minimum pressure: {p_field.min():.6f} m²/s²")
+# logger.info("Pressure range: {p_field.max() - p_field.min():.6f} m²/s²")
+# logger.info("=" * 50)
 
-logger.info("\nCase directory preserved at: {case_dir}")
-logger.info("You can inspect the results with ParaView or other post-processing tools.")
+# logger.info("\nCase directory preserved at: {case_dir}")
+# logger.info("You can inspect the results with ParaView or other post-processing tools.")  # noqa: E501
 
 # %%
 # Summary
