@@ -37,6 +37,9 @@ docs = [
     "sphinx-rtd-theme>=2.0.0",
     "matplotlib>=3.8.0",
     "numpy>=1.26.0",
+    "foamlib>=1.5.5",
+    "pyvista>=0.46.4",
+    "scipy>=1.16.3",
 ]
 
 [build-system]
