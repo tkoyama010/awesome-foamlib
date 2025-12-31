@@ -10,6 +10,9 @@ build:
   apt_packages:
     - openfoam
     - openfoam-examples
+  jobs:
+    post_install:
+      - bash -c "source /usr/share/openfoam/etc/bashrc || true"
 
 sphinx:
   configuration: docs/source/conf.py
