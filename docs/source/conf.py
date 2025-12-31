@@ -51,6 +51,7 @@ if os.environ.get("READTHEDOCS") == "True":
         import pyvista as pv
 
         pv.OFF_SCREEN = True
+        pv.BUILDING_GALLERY = True
         pv.start_xvfb()
     except (ImportError, OSError):
         pass  # PyVista not available or xvfb not available
