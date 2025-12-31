@@ -5,8 +5,10 @@ from pathlib import Path
 
 # Setup OpenFOAM environment if available
 if Path("/usr/share/openfoam/etc/bashrc").exists():
-    # Source OpenFOAM environment for subprocess calls
-    os.environ["FOAM_INST_DIR"] = "/usr/share/openfoam"
+    # Set required OpenFOAM environment variables for subprocess calls
+    os.environ["WM_PROJECT_DIR"] = "/usr/share/openfoam"
+    os.environ["WM_PROJECT"] = "OpenFOAM"
+    os.environ["WM_PROJECT_VERSION"] = "v1912"
 
 # -- Project information -----------------------------------------------------
 project = "awesome-foamlib"
