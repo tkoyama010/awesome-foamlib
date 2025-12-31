@@ -40,8 +40,8 @@ sphinx_gallery_conf = {
     "plot_gallery": True,
     "abort_on_example_error": False,  # Don't fail build on example errors
     "matplotlib_animations": False,
-    "image_scrapers": ("matplotlib",),  # Only scrape matplotlib figures
-    "reset_modules": ("matplotlib", "seaborn"),
+    "image_scrapers": ("matplotlib", "pyvista"),  # Scrape matplotlib and pyvista figures
+    "reset_modules": ("matplotlib", "seaborn", "pyvista"),
 }
 
 # Configure PyVista for headless rendering on ReadTheDocs

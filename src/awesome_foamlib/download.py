@@ -1,6 +1,7 @@
 """Download utilities for OpenFOAM tutorial data."""
 
 import logging
+import shutil
 import urllib.request
 from pathlib import Path
 
@@ -8,7 +9,9 @@ logger = logging.getLogger(__name__)
 
 
 def download_cavity_tutorial(target_dir: Path) -> Path:
-    """Download OpenFOAM cavity tutorial from GitHub.
+    """Download or copy OpenFOAM cavity tutorial.
+
+    First checks system installation, then falls back to downloading from GitHub.
 
     Parameters
     ----------
@@ -18,16 +21,29 @@ def download_cavity_tutorial(target_dir: Path) -> Path:
     Returns
     -------
     Path
-        Path to the extracted cavity tutorial directory
+        Path to the cavity tutorial directory
 
     """
-    # Base URL for downloading tutorial files
     cavity_dir = target_dir / "cavity"
 
-    # If already exists, return it
+    # If already exists in target, return it
     if cavity_dir.exists() and (cavity_dir / "system" / "controlDict").exists():
         logger.info("Using existing tutorial at: %s", cavity_dir)
         return cavity_dir
+
+    # Check system installation first
+    system_tutorial = Path(
+        "/usr/share/doc/openfoam-examples/examples/incompressible/icoFoam/cavity/cavity",
+    )
+
+    if system_tutorial.exists():
+        logger.info("Copying tutorial from system installation...")
+        shutil.copytree(system_tutorial, cavity_dir)
+        logger.info("Tutorial copied to: %s", cavity_dir)
+        return cavity_dir
+
+    # Download from GitHub as fallback
+    logger.info("System tutorial not found, downloading from GitHub...")
 
     # Create tutorial directory structure
     cavity_dir.mkdir(parents=True, exist_ok=True)
@@ -46,8 +62,9 @@ def download_cavity_tutorial(target_dir: Path) -> Path:
         "constant/transportProperties": "constant/transportProperties",
     }
 
+    # Try ESI OpenFOAM repository
     base_url = (
-        "https://raw.githubusercontent.com/OpenFOAM/OpenFOAM-dev/master/"
+        "https://develop.openfoam.com/Development/openfoam/-/raw/master/"
         "tutorials/incompressible/icoFoam/cavity/cavity/"
     )
 
@@ -60,7 +77,15 @@ def download_cavity_tutorial(target_dir: Path) -> Path:
             urllib.request.urlretrieve(url, local_file)  # noqa: S310
         except Exception as e:
             logger.warning("Failed to download %s: %s", remote_path, e)
-            raise
+            # Clean up partial download
+            if cavity_dir.exists():
+                shutil.rmtree(cavity_dir)
+            msg = (
+                "Failed to download OpenFOAM tutorial. "
+                "Please install openfoam-examples: "
+                "sudo apt install openfoam-examples"
+            )
+            raise RuntimeError(msg) from e
 
     logger.info("Tutorial downloaded to: %s", cavity_dir)
     return cavity_dir
