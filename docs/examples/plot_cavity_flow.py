@@ -37,13 +37,17 @@ from awesome_foamlib import download_cavity_tutorial
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
 
+# Create working directory
+work_dir = Path(tempfile.mkdtemp(prefix="cavity_"))
+
 # %%
 # Download OpenFOAM Tutorial
 # --------------------------
-# Download the cavity tutorial from GitHub.
+# Download the cavity tutorial from system or GitHub.
 
-work_dir = Path(tempfile.mkdtemp(prefix="cavity_"))
-case_dir = download_cavity_tutorial(work_dir)
+# Create a specific directory for the case (not a parent directory)
+case_dir = work_dir / "cavity"
+download_cavity_tutorial(case_dir)
 logger.info("Tutorial downloaded to: %s", case_dir)
 
 # %%
