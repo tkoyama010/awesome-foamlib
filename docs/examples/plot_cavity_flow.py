@@ -25,6 +25,7 @@ This example uses foamlib to download tutorial data, generate mesh, and visualiz
 # Import necessary libraries for case setup, simulation, and visualization.
 
 import logging
+import shutil
 import tempfile
 from pathlib import Path
 
@@ -36,6 +37,18 @@ from awesome_foamlib import download_cavity_tutorial
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
+
+# %%
+# Check OpenFOAM Availability
+# ----------------------------
+# This example requires OpenFOAM to be installed. Skip if not available.
+
+if shutil.which("blockMesh") is None:
+    msg = (
+        "OpenFOAM not found. This example requires OpenFOAM to be installed. "
+        "Install with: sudo apt install openfoam openfoam-examples"
+    )
+    raise RuntimeError(msg)
 
 # %%
 # Download OpenFOAM Tutorial
