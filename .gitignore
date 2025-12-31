@@ -46,7 +46,8 @@ htmlcov/
 docs/_build/
 docs/_static/
 docs/_templates/
-docs/auto_examples/
+docs/source/auto_examples/
+docs/build/
 
 # OS
 .DS_Store
