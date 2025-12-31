@@ -26,6 +26,7 @@ the simulation.
 # Import necessary libraries for case setup, simulation, and visualization.
 
 import logging
+import os
 import shutil
 import tempfile
 from pathlib import Path
@@ -56,13 +57,23 @@ case_dir = work_dir / "cavity"
 
 # Copy the entire tutorial case
 shutil.copytree(tutorial_path, case_dir)
-logger.info("Copied tutorial case to: {case_dir}")
+logger.info("Copied tutorial case to: %s", case_dir)
+
+# Reduce simulation time if running on ReadTheDocs (to avoid timeout)
+if os.environ.get("READTHEDOCS") == "True":
+    controldict_path = case_dir / "system" / "controlDict"
+    controldict_text = controldict_path.read_text()
+    # Reduce endTime from 0.5 to 0.1 and writeInterval from 20 to 10
+    controldict_text = controldict_text.replace("endTime         0.5;", "endTime         0.1;")
+    controldict_text = controldict_text.replace("writeInterval   20;", "writeInterval   10;")
+    controldict_path.write_text(controldict_text)
+    logger.info("Reduced simulation time for ReadTheDocs build")
 
 # List case structure
 logger.info("\nCase directory structure:")
 for item in case_dir.rglob("*"):
     if item.is_file():
-        logger.info("  {item.relative_to(case_dir)}")
+        logger.info("  %s", item.relative_to(case_dir))
 
 # %%
 # Initialize foamlib Case
