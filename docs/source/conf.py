@@ -1,5 +1,7 @@
 """Configuration file for the Sphinx documentation builder."""
 
+import os
+
 # -- Project information -----------------------------------------------------
 project = "awesome-foamlib"
 copyright_text = "2025, Tetsuo Koyama"
@@ -29,8 +31,25 @@ sphinx_gallery_conf = {
     "filename_pattern": r"\.py$",
     "ignore_pattern": r"(__init__|conf)\.py",
     "download_all_examples": False,
-    "plot_gallery": True,
+    "plot_gallery": "True",  # Set to False on ReadTheDocs if needed
+    "abort_on_example_error": False,  # Don't fail build on example errors
+    "matplotlib_animations": False,
+    "image_scrapers": ("matplotlib",),  # Only scrape matplotlib figures
+    "reset_modules": ("matplotlib", "seaborn"),
 }
+
+# Configure PyVista for headless rendering on ReadTheDocs
+if os.environ.get("READTHEDOCS") == "True":
+    # Skip execution of examples on ReadTheDocs
+    sphinx_gallery_conf["plot_gallery"] = False
+    # Set PyVista to off-screen rendering
+    try:
+        import pyvista as pv
+
+        pv.OFF_SCREEN = True
+        pv.start_xvfb()
+    except (ImportError, OSError):
+        pass  # PyVista not available or xvfb not available
 
 # -- Intersphinx configuration -----------------------------------------------
 intersphinx_mapping = {
