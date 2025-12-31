@@ -38,7 +38,7 @@ sphinx_gallery_conf = {
     "ignore_pattern": r"(__init__|conf)\.py",
     "download_all_examples": False,
     "plot_gallery": True,
-    "abort_on_example_error": False,  # Don't fail build on example errors
+    "only_warn_on_example_error": True,  # Don't fail build on example errors
     "matplotlib_animations": False,
     "image_scrapers": ("matplotlib", "pyvista"),  # Scrape matplotlib and pyvista figures
     "reset_modules": ("matplotlib", "seaborn"),
