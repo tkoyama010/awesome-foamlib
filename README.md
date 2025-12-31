@@ -14,10 +14,11 @@ An awesome list for [foamlib](https://github.com/exasim-project/foamlib) with Op
 
 ## Features
 
-- 📚 Curated list of foamlib resources
-- 🎓 Interactive tutorials using sphinx-gallery
-- 🚀 Modern Python packaging with uv
-- 📖 Comprehensive documentation
+- Curated list of foamlib resources
+- Interactive tutorials using sphinx-gallery
+- Docker SDK-based OpenFOAM runner for robust container management
+- Modern Python packaging with uv
+- Comprehensive documentation
 
 ## Installation
 
@@ -41,6 +42,24 @@ uv sync
 pip install -e .
 ```
 
+## Quick Start
+
+### Docker SDK Runner
+
+Run OpenFOAM commands in Docker containers with a robust Python API:
+
+```python
+from pathlib import Path
+from awesome_foamlib import DockerFoamRunner
+
+# Initialize runner
+runner = DockerFoamRunner()
+
+# Run OpenFOAM commands
+runner.run(Path("./cavity"), "blockMesh")
+runner.run(Path("./cavity"), "icoFoam")
+```
+
 ## Development
 
 This project uses [uv](https://github.com/astral-sh/uv) for fast, modern Python package management.
@@ -54,21 +73,15 @@ uv sync
 # Run tests (after test files are created)
 uv run pytest
 
+# Run type checking
+uv run mypy src/
+
+# Run linting
+uv run ruff check src/
+
 # Build documentation (after setting up docs/ directory with Sphinx configuration)
 # cd docs
 # uv run make html
-```
-
-## Project Structure
-
-```
-awesome-foamlib/
-├── src/
-│   └── awesome_foamlib/    # Main package
-├── docs/                    # Documentation (future)
-├── examples/                # Tutorial examples (future)
-├── pyproject.toml          # Project configuration
-└── README.md
 ```
 
 ## Contributing
