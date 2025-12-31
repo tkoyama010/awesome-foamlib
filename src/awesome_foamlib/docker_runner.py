@@ -86,7 +86,7 @@ class DockerFoamRunner:
 
             # Stream logs in real-time
             for line in container.logs(stream=True):
-                logger.debug(line.decode("utf-8").rstrip())
+                logger.info(line.decode("utf-8").rstrip())
 
             # Wait for container to finish
             result = container.wait()
