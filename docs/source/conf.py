@@ -31,7 +31,7 @@ sphinx_gallery_conf = {
     "filename_pattern": r"\.py$",
     "ignore_pattern": r"(__init__|conf)\.py",
     "download_all_examples": False,
-    "plot_gallery": "True",  # Set to False on ReadTheDocs if needed
+    "plot_gallery": True,
     "abort_on_example_error": False,  # Don't fail build on example errors
     "matplotlib_animations": False,
     "image_scrapers": ("matplotlib",),  # Only scrape matplotlib figures
@@ -40,9 +40,7 @@ sphinx_gallery_conf = {
 
 # Configure PyVista for headless rendering on ReadTheDocs
 if os.environ.get("READTHEDOCS") == "True":
-    # Skip execution of examples on ReadTheDocs
-    sphinx_gallery_conf["plot_gallery"] = False
-    # Set PyVista to off-screen rendering
+    # Set PyVista to off-screen rendering for headless environment
     try:
         import pyvista as pv
 
