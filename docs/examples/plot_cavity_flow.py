@@ -95,6 +95,7 @@ logger.info("Loaded mesh with %d points and %d cells", mesh.n_points, mesh.n_cel
 # Create an interactive 3D visualization of the mesh.
 
 plotter = pv.Plotter(window_size=(800, 600))
+plotter.enable_parallel_projection()
 
 # Plot the mesh with edges
 plotter.add_mesh(
@@ -105,14 +106,6 @@ plotter.add_mesh(
     line_width=1,
     opacity=0.3,
     label="Cavity Mesh",
-)
-
-# Add mesh points
-plotter.add_points(
-    mesh.points,
-    color="red",
-    point_size=3,
-    render_points_as_spheres=True,
 )
 
 plotter.add_title("Cavity Mesh - 3D Visualization", font_size=14)
@@ -141,7 +134,7 @@ logger.info("  Domain bounds:")
 logger.info("    x: [%.6f, %.6f] m", mesh.bounds[0], mesh.bounds[1])
 logger.info("    y: [%.6f, %.6f] m", mesh.bounds[2], mesh.bounds[3])
 logger.info("    z: [%.6f, %.6f] m", mesh.bounds[4], mesh.bounds[5])
-logger.info("  Volume: %.6e m³", mesh.volume)
+logger.info("  Volume: %.6e m3", mesh.volume)
 
 logger.info("\nMesh generation and visualization complete!")
 logger.info("Case directory: %s", case_dir)
