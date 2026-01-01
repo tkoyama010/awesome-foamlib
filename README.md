@@ -1,6 +1,5 @@
 # awesome-foamlib  [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 ![All Contributors](https://img.shields.io/github/all-contributors/tkoyama010/awesome-foamlib?color=ee8449)
-
 [![Documentation Status](https://readthedocs.org/projects/awesome-foamlib/badge/?version=latest)](https://awesome-foamlib.readthedocs.io/en/latest/?badge=latest)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
